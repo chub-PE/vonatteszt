@@ -5,16 +5,17 @@ import java.util.ArrayList;
 public class Vonal
 {
 	//a ket vonal azonositoja
-	public static final int ODA_VONAL = 1;
-	public static final int VISSZA_VONAL = 2;
+	public static final int AB_VONAL = 1;
+	public static final int BA_VONAL = 2;
 	
 	//mivel csak az egyik iranyban van lassitas, a lassu vonalt ezzel a valtozoval lehet meghatarozni
-	public static int LASSU_VONAL = ODA_VONAL;
+	private int LASSU_VONAL = AB_VONAL;
 
 	//a vonal hossza meterben, hogy konnyebb legyen tagolni
 	private double vonalHossz = 6000;
 	
-	//a lassu szakaszon 6km/h-val, a hagyomanyos szakaszon 18km/h-val halad a vonat
+	//a lassu szakaszon 6km/h-val, a hagyomanyos szakaszon 18km/h-val halad a vonat 
+	//(meter per oraban megadva)
 	private double hagyomanyosSzakaszSebesseg = 18000;
 	private double lassuSzakaszSebesseg = 6000;
 	
@@ -29,7 +30,7 @@ public class Vonal
 	private double lassuSzakaszVeg = 4000;
 	
 	//az inditando vonatok szama
-	private int vonatokSzama;
+	private int vonatokSzama = 10;
 	
 	//eltelt ido
 	private double elteltIdo;
@@ -37,63 +38,50 @@ public class Vonal
 	//vonatok listaja
 	private ArrayList<Vonat> vonatLista = new ArrayList<Vonat>();
 	
-	public Vonal(int vonatokSzama)
+	public Vonal(double futasiIdo)
 	{
+		//kesleltetes ket vonat inditasa kozott.
 		double keslekedes = 0;
+		//elkesziti a vonat objektumokat
 		for (int i = 0; i != vonatokSzama; i++)
 		{
-			vonatLista.add(new Vonat(ODA_VONAL, 0, keslekedes, vonalHossz));
+			vonatLista.add(new Vonat(this, i + 1, AB_VONAL, 0, keslekedes));
 			keslekedes = keslekedes + indulasKesleltetes;
 		}
 		elteltIdo = 0;
+	
+		//lefuttatja a szimulaciot
+		for (int i = 0; i < futasiIdo; i++)
+		{
+			idoMulato();
+		}
 	}
 	
 	/**Minden alkalommal mikor ezt a metodust hivjak, az ido elore mozdul egy perccel.*/
-	public void idoKezelo()
+	public void idoMulato()
 	{
-		elteltIdo++;
 		for (Vonat v : vonatLista)
 		{
 			//ha a vonat a vegallomason tartozkodik, mozgas helyett egy percet var
-			if (v.vegallomasonVan())
+			if (v.getVegallomasonVan())
 			{
 				v.percVarakozas();
 			}
-			//ha a vonat uton van, megtesz egy bizonyos utat.
+			//ha a vonat uton van, megtesz egy bizonyos utat. Ha ezutan megerkezett az allomasra...
 			else if (v.eloreMozgas(megtettTav(v)) >= vonalHossz)
 			{
-				//ha ezzel az utolso mozdulattal elerte a vonal veget, akkor a vonat varakozik a vegallomason.
+				//...akkor a vonat varakozik a vegallomason.
 				v.setKeslekedes(vegallomasKesleltetes);
 			}
 		}
+		elteltIdo++;
 	}
 
-	/**Ez a vonat meghatarozza az osszes vonat helyet az adott idoben*/
-	public String[] szovegesHelyMeghatarozas(double elteltIdo)
-	{
-		idoKezelo();
-		if (this.elteltIdo > elteltIdo)
-		{
-			ArrayList<String> result = new ArrayList<String>();
-			
-			for (Vonat v : vonatLista)
-			{
-				result.add(v.helyzetJelentes());
-			}
-			
-			return result.toArray(new String[result.size()]);
-		}
-		else
-		{
-			return szovegesHelyMeghatarozas(elteltIdo);
-		}
-	}
-	
 	
 	/**Utszakasztol fuggoen kiszamolja a megtett tavot.*/
 	private double megtettTav(Vonat vonat)
 	{
-		if (vonat.getVonalAzonosito() == LASSU_VONAL &&	lassuSzakaszbanVan(vonat))
+		if (lassuSzakaszbanVan(vonat))
 		{
 			return lassuSzakaszSebesseg / 60;
 		}
@@ -101,10 +89,25 @@ public class Vonal
 	}
 	
 	/**Ha a vonat a lassu szakaszban van, igazat ad vissza.*/
-	private boolean lassuSzakaszbanVan(Vonat vonat)
+	public boolean lassuSzakaszbanVan(Vonat vonat)
 	{
-		return (vonat.getPozicio() > lassuSzakaszKezdet && vonat.getPozicio() < lassuSzakaszVeg);
+		return (vonat.getVonalAzonosito() == LASSU_VONAL && 
+				(vonat.getPozicio() > lassuSzakaszKezdet &&
+						vonat.getPozicio() < lassuSzakaszVeg));
 	}
 
+	public double getElteltIdo()
+	{
+		return elteltIdo;
+	}
 
+	public double getVonalHossz()
+	{
+		return vonalHossz;
+	}
+	
+	public Vonat[] getVonatLista()
+	{
+		return vonatLista.toArray(new Vonat[vonatLista.size()]);
+	}
 }

@@ -6,11 +6,12 @@ public class Main
 	
 	public static void main (String[] args)
 	{
-		Vonal vonal = new Vonal();
-		for (Vonat v : vonal.szimulacioFuttatasa(40))
+		Vonal vonal = new Vonal(100);
+		for (Vonat v : vonal.getVonatLista())
 		{
-			System.out.println(v.megtettUtSzazalek() + " a megtett utszazalek");
+			System.out.println(v.getVonatIndex() + ". vonat " +	v.getLog()[27].logSzoveg());
 		}
+		
 	}
 	
 }
