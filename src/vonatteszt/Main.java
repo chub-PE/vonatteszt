@@ -6,10 +6,10 @@ public class Main
 	
 	public static void main (String[] args)
 	{
-		Vonal vonal = new Vonal(100);
+		Szimulacio vonal = new Szimulacio(11000);
 		for (Vonat v : vonal.getVonatLista())
 		{
-			System.out.println(v.getVonatIndex() + ". vonat " +	v.getLog()[27].logSzoveg());
+			System.out.println(v.getVonatSorszam() + ". vonat " +	v.getLog()[20].logSzoveg());
 		}
 		
 	}

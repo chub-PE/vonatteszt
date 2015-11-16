@@ -2,7 +2,7 @@ package vonatteszt;
 
 import java.util.ArrayList;
 
-public class Vonal
+public class Szimulacio
 {
 	//a ket vonal azonositoja
 	public static final int AB_VONAL = 1;
@@ -38,7 +38,7 @@ public class Vonal
 	//vonatok listaja
 	private ArrayList<Vonat> vonatLista = new ArrayList<Vonat>();
 	
-	public Vonal(double futasiIdo)
+	public Szimulacio(double futasiIdo)
 	{
 		//kesleltetes ket vonat inditasa kozott.
 		double keslekedes = 0;

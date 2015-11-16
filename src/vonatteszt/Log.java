@@ -35,7 +35,7 @@ public class Log
 		
 		if (vegallomasonVan)
 		{
-			if (megNemUtazott || vonalAzonosito == Vonal.BA_VONAL)
+			if (megNemUtazott || vonalAzonosito == Szimulacio.BA_VONAL)
 			{
 				statusz = A_VEGALLOMASON_ALL;
 			}
@@ -46,7 +46,7 @@ public class Log
 		}
 		else
 		{
-			if (vonalAzonosito == Vonal.AB_VONAL)
+			if (vonalAzonosito == Szimulacio.AB_VONAL)
 			{
 				statusz = AB_VONALON_HALAD;
 			}

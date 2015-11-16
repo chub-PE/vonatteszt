@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 public class Vonat
 {
-	//vonalazonosito, ahogy a Vonal osztalyban meg van hatarozva.
+	//vonalazonosito, ahogy a Szimulacio osztalyban meg van hatarozva.
 	private int vonalAzonosito;
+	
 	private double jelenlegiPozicio;
 	private double keslekedesIdo;
-	private Vonal vonal;
+	private Szimulacio vonal;
 	private int hanyadikMenet;
 	//a vonat sorszama (az alapjan, melyik indult el eloszorre, masodszorra, stb.)
-	private int vonatIndex;
+	private int vonatSorszam;
 	
 	private ArrayList<Log> logGyujtemeny = new ArrayList<Log>();
 	
@@ -19,14 +20,27 @@ public class Vonat
 	//ha ez a boolean igaz, a vonat meg nem indult el ma.
 	private boolean megNemUtazott = true;
 	
-	public Vonat(Vonal vonal, int vonatIndex, int vonalAzonosito, double pozicio, double keslekedesIdo)
+	/**
+	 * Keszit egy uj vonat objektumot.
+	 * Vonal : az objektum, ami a szimulaciot futtatja
+	 * vonatSorszam : vonat azonosito sorszama
+	 * vonalAzonosito : a jelenlegi utvonal azonositoja (ahogy a szimulacio osztalyban meg van hatarozva)
+	 * pozicio : a vonat kezdo poziciooja
+	 * keslekedesIdo : a vonat a megadott ido utan fog csak elindulni eloszor.*/
+	public Vonat(Szimulacio vonal, int vonatSorszam, int vonalAzonosito, double pozicio, double keslekedesIdo)
 	{
-		this.vonatIndex = vonatIndex;
+		this.vonatSorszam = vonatSorszam;
 		this.vonal = vonal;
 		this.vonalAzonosito = vonalAzonosito;
 		this.jelenlegiPozicio = pozicio;
 		this.keslekedesIdo = keslekedesIdo;
 		hanyadikMenet = 0;
+		//ez mindig csak az elso vonatra lesz ervenyes
+		if (keslekedesIdo == 0)
+		{
+			vonalValtas();
+			megNemUtazott = false;
+		}
 	}
 	
 	/**
@@ -66,13 +80,13 @@ public class Vonat
 	
 	private void vonalValtas()
 	{
-		if (vonalAzonosito == Vonal.AB_VONAL)
+		if (vonalAzonosito == Szimulacio.AB_VONAL)
 		{
-			vonalAzonosito = Vonal.BA_VONAL;
+			vonalAzonosito = Szimulacio.BA_VONAL;
 		}
 		else
 		{
-			vonalAzonosito = Vonal.AB_VONAL;
+			vonalAzonosito = Szimulacio.AB_VONAL;
 		}
 	}
 	
@@ -106,11 +120,13 @@ public class Vonat
 		return keslekedesIdo >= 0;
 	}
 	
+	/**Visszaadja a vonat jelenlegi poziciojat*/
 	public double getPozicio()
 	{
 		return jelenlegiPozicio;
 	}
 
+	//statisztikai adat, jelenleg nincs hasznalatban
 	public int getMegtettUtSzazalek()
 	{
 		return (int) (jelenlegiPozicio / vonal.getVonalHossz() * 100);
@@ -131,34 +147,44 @@ public class Vonat
 		return vonalAzonosito;
 	}
 	
+	/**Igazat ad vissza ha a vonat lassu szakaszban van.*/
 	public boolean getLassuSzakaszbanVan()
 	{
 		return vonal.lassuSzakaszbanVan(this);
 	}
 	
+	/**Igazat ad vissza, ha a vonat meg nem utazott.*/
 	public boolean megNemUtazott()
 	{
 		return megNemUtazott;
 	}
 	
-	public Vonal getVonal()
+	/**Visszaadja a vonalat amin a vonat jelenleg tartozkodik.*/
+	public Szimulacio getVonal()
 	{
 		return vonal;
 	}
 	
+	/**Visszaadja a teljes log tombot.
+	 * Hasznalat = a vonatInstance.getLog()[29] log objektum tartalmaz minden adatot
+	 * arrol, hogy a vonat hol tartozkodott/mit csinalt a 29. percben.*/
 	public Log[] getLog()
 	{
 		return logGyujtemeny.toArray(new Log[logGyujtemeny.size()]);
 	}
 	
+	/**Visszaadja hanyadik menetnel tart ez a vonat.
+	 * Minden oda-vissza ut 2 menetnek szamit.*/
 	public int getHanyadikMenet()
 	{
 		return hanyadikMenet;
 	}
 	
-	public int getVonatIndex()
+	/**
+	 * Visszaadja a jelenlegi vonat sorszamat.*/
+	public int getVonatSorszam()
 	{
-		return vonatIndex;
+		return vonatSorszam;
 	}
 	
 	
