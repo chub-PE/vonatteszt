@@ -6,10 +6,10 @@ public class Main
 	
 	public static void main (String[] args)
 	{
-		Vonal vonal = new Vonal(10);
-		for (String s : vonal.szovegesHelyMeghatarozas(60))
+		Vonal vonal = new Vonal();
+		for (Vonat v : vonal.szimulacioFuttatasa(40))
 		{
-			System.out.println(s);
+			System.out.println(v.megtettUtSzazalek() + " a megtett utszazalek");
 		}
 	}
 	
