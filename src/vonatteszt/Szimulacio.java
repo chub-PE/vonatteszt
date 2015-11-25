@@ -30,7 +30,7 @@ public class Szimulacio
 	private double lassuSzakaszVeg = 4000;
 	
 	//az inditando vonatok szama
-	private int vonatokSzama = 10;
+	private int vonatokSzama = 6;
 	
 	//eltelt ido
 	private double elteltIdo;
@@ -109,5 +109,10 @@ public class Szimulacio
 	public Vonat[] getVonatLista()
 	{
 		return vonatLista.toArray(new Vonat[vonatLista.size()]);
+	}
+	
+	public double getHagyomanyosSzakaszSebesseg()
+	{
+		return hagyomanyosSzakaszSebesseg;
 	}
 }

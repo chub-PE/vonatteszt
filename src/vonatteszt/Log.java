@@ -14,6 +14,7 @@ public class Log
 	private int statusz;
 	private double keslekedesiIdo;
 	private int hanyadikMenet;
+	private boolean megNemUtazott;
 	
 	public Log (Vonat vonat)
 	{
@@ -27,6 +28,7 @@ public class Log
 			boolean megNemUtazott, int vonalAzonosito, double keslekedesiIdo,
 			int hanyadikMenet)
 	{
+		this.megNemUtazott = megNemUtazott;
 		this.ido = ido;
 		this.pozicio = pozicio;
 		this.lassuSzakasz = lassuSzakasz;
@@ -96,6 +98,41 @@ public class Log
 		}
 		result = result + " A vonat eppen a " + hanyadikMenet + ". menetet vegzi.";
 		return result;
+	}
+
+	public double getIdo()
+	{
+		return ido;
+	}
+
+	public double getPozicio()
+	{
+		return pozicio;
+	}
+
+	public boolean isLassuSzakasz()
+	{
+		return lassuSzakasz;
+	}
+
+	public int getStatusz()
+	{
+		return statusz;
+	}
+
+	public double getKeslekedesiIdo()
+	{
+		return keslekedesiIdo;
+	}
+
+	public int getHanyadikMenet()
+	{
+		return hanyadikMenet;
+	}
+	
+	public boolean isMegNemUtazott()
+	{
+		return megNemUtazott;
 	}
 	
 	
